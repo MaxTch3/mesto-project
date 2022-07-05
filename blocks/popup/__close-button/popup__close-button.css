@@ -5,6 +5,7 @@
   color: inherit;
   background-color: transparent;
   position: absolute;
+  cursor: pointer;
   top: -40px;
   right: -40px;
   width: 32px;

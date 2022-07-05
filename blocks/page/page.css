@@ -18,3 +18,10 @@
     padding-left: calc((100vw - 320px) * 0.18854 + 19px);
   }
 }
+
+@media screen and (max-width: 320px) {
+  .page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

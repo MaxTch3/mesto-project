@@ -1,3 +1,10 @@
 .footer {
   padding-top: calc((100vw - 320px) * 0.019792 + 48px);
 }
+
+@media screen and (max-width: 320px) {
+  .footer {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}

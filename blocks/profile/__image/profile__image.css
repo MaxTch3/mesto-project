@@ -1,4 +1,7 @@
 .profile__image {
-  border-radius: inherit;
-  width: 100%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #c4c4c4;
+  object-fit: cover;
 }

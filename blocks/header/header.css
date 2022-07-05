@@ -2,6 +2,6 @@
   display: flex;
   align-items: flex-start;
   min-height: calc((100vw - 320px) * 0.01875 + 56px);
-  border-bottom: 1px solid #545454;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   box-sizing: border-box;
 }

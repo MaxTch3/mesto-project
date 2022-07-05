@@ -11,3 +11,10 @@
     gap: 32px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .profile {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}

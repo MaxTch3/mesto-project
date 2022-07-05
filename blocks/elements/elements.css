@@ -18,3 +18,10 @@
     padding-top: 36px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .elements {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}

@@ -10,11 +10,12 @@
 
 @media screen and (max-width: 680px) {
   .profile__subtitle {
-    text-align: center;
+    align-self: center;
+    max-width: 282px;
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 460px) {
   .profile__subtitle {
     font-size: 14px;
   }
