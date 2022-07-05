@@ -1,0 +1,9 @@
+.logo {
+  width: calc((100vw - 320px) * 0.03958 + 104px);
+}
+
+@media screen and (max-width: 320px) {
+  .logo {
+    margin-left: 8px;
+  }
+}

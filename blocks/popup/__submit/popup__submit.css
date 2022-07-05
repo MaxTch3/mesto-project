@@ -1,0 +1,26 @@
+.popup__submit {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  margin-top: 48px;
+  color: #fff;
+  border: none;
+  background-color: #000;
+  border-radius: 2px;
+  min-height: 50px;
+  line-height: 1.2;
+  font-size: 18px;
+  transition: opacity 0.2s ease;
+}
+
+.popup__submit:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 450px) {
+  .popup__submit {
+    margin-top: 45px;
+  }
+}
