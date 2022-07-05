@@ -13,3 +13,4 @@
 * В дальнейшем проект послужит основой для практической работы с языком программирования Java Script
 
 ### Ссылка на GitHub Pages:
+https://maxtch3.github.io/project-mesto-public/index.html
