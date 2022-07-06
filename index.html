@@ -21,12 +21,12 @@
           <div class="profile__info">
             <div class="profile__title-and-edit-button">
               <h1 class="profile__title">Жак-Ив Кусто</h1>
-              <button class="profile__edit-button" type="button"></button>
+              <button class="profile__edit-button" type="button" aria-label="Редактирование"></button>
             </div>
             <p class="profile__subtitle">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-button" type="button"></button>
+        <button class="profile__add-button" type="button" aria-label="Добавление"></button>
       </section>
 
       <section class="elements">
@@ -34,7 +34,7 @@
           <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
           <div class="element__info">
             <h2 class="element__title">Карачаевск</h2>
-            <button class="element__like-button" type="button"></button>
+            <button class="element__like-button" type="button" aria-label="Нравится"></button>
           </div>
         </article>
         <article class="element">
@@ -84,11 +84,11 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="edit-form">
-        <input class="popup__input popup__input_name_name-and-surname" type="text" value="Жак-Ив Кусто" required>
-        <input class="popup__input popup__input_name_work" type="text" value="Исследователь океана" required>
-        <button class="popup__submit" type="button">Сохранить</button>
-        <button class="popup__close-button" type="button"></button>
+        <input class="popup__input popup__input_name_name-and-surname" name="name-and-surname" type="text" value="Жак-Ив Кусто" required>
+        <input class="popup__input popup__input_name_work" name="work" type="text" value="Исследователь океана" required>
+        <button class="popup__submit" type="submit">Сохранить</button>
       </form>
+      <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
     </div>
   </div>
 
