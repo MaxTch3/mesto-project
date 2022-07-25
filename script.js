@@ -65,17 +65,17 @@ const elements = document.querySelector('.elements');
 const elementsList = [];
 
 for (let i = 0; i < initialCards.length; i++) {
-  const element = document.querySelector('.element').cloneNode(true);
+  const element = elements.querySelector('.element').cloneNode(true);
   const elementImage = element.querySelector('.element__image');
   const elementName = element.querySelector('.element__title');
   elementImage.src = initialCards[i].link;
   elementName.textContent = initialCards[i].name;
-
   elementsList[i] = element;
 }
+//Освобождаемся от элементов в разметке
+elements.innerHTML = '';
 
-console.log(elementsList);
-
+//Записываем новые значения element в elements
 for (let i = 0; i < elementsList.length; i++) {
   elements.append(elementsList[i]);
 }
