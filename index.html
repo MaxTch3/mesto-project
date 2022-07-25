@@ -31,42 +31,54 @@
 
       <section class="elements">
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Карачаевск</h2>
             <button class="element__like-button" type="button" aria-label="Нравится"></button>
           </div>
         </article>
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Гора Эльбрус</h2>
             <button class="element__like-button element__like-button_active" type="button"></button>
           </div>
         </article>
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Домбай</h2>
             <button class="element__like-button" type="button"></button>
           </div>
         </article>
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Гора Эльбрус">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Гора Эльбрус">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Гора Эльбрус</h2>
             <button class="element__like-button" type="button"></button>
           </div>
         </article>
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Домбай">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Домбай">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Домбай</h2>
             <button class="element__like-button" type="button"></button>
           </div>
         </article>
         <article class="element">
-          <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Карачаево-Черкессия">
+          <div class="element__image-box">
+            <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Карачаево-Черкессия">
+          </div>
           <div class="element__info">
             <h2 class="element__title">Карачаево-Черкессия</h2>
             <button class="element__like-button" type="button"></button>
@@ -84,8 +96,10 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="edit-form">
-        <input class="popup__input popup__input_name_name-and-surname" name="name-and-surname" type="text" value="Жак-Ив Кусто" required>
-        <input class="popup__input popup__input_name_work" name="work" type="text" value="Исследователь океана" required>
+        <input class="popup__input popup__input_name_name-and-surname" name="name-and-surname" type="text"
+          value="Жак-Ив Кусто" required>
+        <input class="popup__input popup__input_name_work" name="work" type="text" value="Исследователь океана"
+          required>
         <button class="popup__submit" type="submit">Сохранить</button>
       </form>
       <button class="popup__close-button" type="button" aria-label="Закрыть"></button>

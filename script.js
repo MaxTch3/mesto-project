@@ -26,10 +26,56 @@ jobInput.value = profileSubtitle.textContent;
 
 
 
-function formSubmitHandler (evt) {
-    evt.preventDefault();
-    profileTitle.textContent = nameInput.value;
-    profileSubtitle.textContent = jobInput.value;
-    togglePopUp();
+function formSubmitHandler(evt) {
+  evt.preventDefault();
+  profileTitle.textContent = nameInput.value;
+  profileSubtitle.textContent = jobInput.value;
+  togglePopUp();
 }
 formElement.addEventListener('submit', formSubmitHandler);
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+const elements = document.querySelector('.elements');
+const elementsList = [];
+
+for (let i = 0; i < initialCards.length; i++) {
+  const element = document.querySelector('.element').cloneNode(true);
+  const elementImage = element.querySelector('.element__image');
+  const elementName = element.querySelector('.element__title');
+  elementImage.src = initialCards[i].link;
+  elementName.textContent = initialCards[i].name;
+
+  elementsList[i] = element;
+}
+
+console.log(elementsList);
+
+for (let i = 0; i < elementsList.length; i++) {
+  elements.append(elementsList[i]);
+}
