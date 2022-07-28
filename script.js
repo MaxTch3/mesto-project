@@ -34,13 +34,13 @@ function togglePopUp(popUp) {
 // кнопка Редактирования профиля - вызываем окно редактирования формы
 const popUpEditProfile = document.querySelector('.popup');
 const profileEditButton = document.querySelector('.profile__edit-button');
-profileEditButton.addEventListener('click', function() {
+profileEditButton.addEventListener('click', function () {
   togglePopUp(popUpEditProfile)
 });
 
 // кнопка Закрытия окна редактирования профиля
 const popupCloseButton = popUpEditProfile.querySelector('.popup__close-button');
-popupCloseButton.addEventListener('click', function() {
+popupCloseButton.addEventListener('click', function () {
   togglePopUp(popUpEditProfile)
 });
 
@@ -131,10 +131,6 @@ const addButton = popUpAddCard.querySelector('.popup__submit');
 addButton.textContent = 'Создать';
 // Добавляем форму в разметку
 popUpEditProfile.after(popUpAddCard);
-
-// function togglePopUpAddCard() {
-//   popUpAddCard.classList.toggle('popup_opened')
-// };
 
 const profileAddButton = document.querySelector('.profile__add-button');
 profileAddButton.addEventListener('click', function () {
