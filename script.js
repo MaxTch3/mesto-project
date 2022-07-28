@@ -1,4 +1,3 @@
-// массив "из коробки"
 const initialCards = [
   {
     name: 'Архыз',
@@ -26,25 +25,21 @@ const initialCards = [
   }
 ];
 
-// функция открытия/закрытия PopUp окна
 function togglePopUp(popUp) {
   popUp.classList.toggle('popup_opened')
 };
 
-// кнопка Редактирования профиля - вызываем окно редактирования формы
 const popUpEditProfile = document.querySelector('.popup');
 const profileEditButton = document.querySelector('.profile__edit-button');
 profileEditButton.addEventListener('click', function () {
   togglePopUp(popUpEditProfile)
 });
 
-// кнопка Закрытия окна редактирования профиля
 const popupCloseButton = popUpEditProfile.querySelector('.popup__close-button');
 popupCloseButton.addEventListener('click', function () {
   togglePopUp(popUpEditProfile)
 });
 
-// переносим данные о имени и работе со страницы в окно редактирования профиля
 const formElement = popUpEditProfile.querySelector('.popup__form');
 const profileTitle = document.querySelector('.profile__title');
 const nameInput = formElement.querySelector('.popup__input_name_name-and-surname');
@@ -53,7 +48,6 @@ const profileSubtitle = document.querySelector('.profile__subtitle');
 const jobInput = formElement.querySelector('.popup__input_name_work');
 jobInput.value = profileSubtitle.textContent;
 
-// записываем данные из полей ввода формы редактирования профиля на страницу
 function formSubmitHandler(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
@@ -62,9 +56,8 @@ function formSubmitHandler(evt) {
 }
 formElement.addEventListener('submit', formSubmitHandler);
 
-// работаем с полем для карточек
 const elements = document.querySelector('.elements');
-// функция создания карточки
+
 function createCard(name, url) {
   const element = elements.querySelector('#element').content.cloneNode(true);
   const elementImage = element.querySelector('.element__image');
@@ -95,28 +88,21 @@ function createCard(name, url) {
   });
   return element
 }
-// функция добавления карточки
+
 function addCard(card) {
   elements.prepend(card);
 }
-// распаковываем данные "из коробки"
+
 for (let i = 0; i < initialCards.length; i++) {
   const newCard = createCard(initialCards[i].name, initialCards[i].link);
   addCard(newCard);
 }
 
-//----------------------------------------------------------
-// PopUp добавления карточки
-//----------------------------------------------------------
-// копируем popUp
 const popUpAddCard = popUpEditProfile.cloneNode(true);
-// изменяем имя формы
 const formPopUpAddCard = popUpAddCard.querySelector('.popup__form');
 formPopUpAddCard.name = 'add-form';
-// заменяем заголовок карточки
 const titlePopUpAddCard = popUpAddCard.querySelector('.popup__title');
 titlePopUpAddCard.textContent = 'Новое место';
-// заменяем классы полей ввода
 const inputPopUp = popUpAddCard.querySelectorAll('.popup__input');
 inputPopUp[0].classList = 'popup__input popup__input_name_image-title';
 inputPopUp[0].name = 'image-name';
@@ -126,10 +112,8 @@ inputPopUp[1].classList = 'popup__input popup__input_name_image-url';
 inputPopUp[1].name = 'image-url';
 inputPopUp[1].value = '';
 inputPopUp[1].placeholder = 'Ссылка на картинку';
-// изменяем текст на кнопке
 const addButton = popUpAddCard.querySelector('.popup__submit');
 addButton.textContent = 'Создать';
-// Добавляем форму в разметку
 popUpEditProfile.after(popUpAddCard);
 
 const profileAddButton = document.querySelector('.profile__add-button');
@@ -142,7 +126,6 @@ popupAddCardCloseButton.addEventListener('click', function () {
   togglePopUp(popUpAddCard)
 });
 
-// добавляем функцию добавлять карточки
 const formAddElement = popUpAddCard.querySelector('.popup__form');
 
 function formAddSubmitHandler(evt) {
@@ -157,7 +140,6 @@ function formAddSubmitHandler(evt) {
 
 formAddElement.addEventListener('submit', formAddSubmitHandler);
 
-// подключаем форму просмотра
 const viewerPopUp = document.querySelector('.popup_opacity_photo-viewer');
 const closeViewerButton = viewerPopUp.querySelector('.popup__close-button');
 closeViewerButton.addEventListener('click', function () {
