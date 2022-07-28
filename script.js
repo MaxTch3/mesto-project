@@ -130,8 +130,8 @@ const formAddElement = popUpAddCard.querySelector('.popup__form');
 
 function formAddSubmitHandler(evt) {
   evt.preventDefault();
-  let name = formAddElement.querySelector('.popup__input_name_image-title').value;
-  let url = formAddElement.querySelector('.popup__input_name_image-url').value;
+  const name = formAddElement.querySelector('.popup__input_name_image-title').value;
+  const url = formAddElement.querySelector('.popup__input_name_image-url').value;
   addCard(createCard(name, url));
   formAddElement.querySelector('.popup__input_name_image-title').value = '';
   formAddElement.querySelector('.popup__input_name_image-url').value = '';
