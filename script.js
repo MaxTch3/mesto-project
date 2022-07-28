@@ -62,29 +62,51 @@ const initialCards = [
 ];
 
 const elements = document.querySelector('.elements');
-const elementsList = [];
 
-for (let i = 0; i < initialCards.length; i++) {
-  const element = elements.querySelector('.element').cloneNode(true);
+function createCard(name, url) {
+  const element = elements.querySelector('#element').content.cloneNode(true);
   const elementImage = element.querySelector('.element__image');
   const elementName = element.querySelector('.element__title');
-  elementImage.src = initialCards[i].link;
-  elementName.textContent = initialCards[i].name;
-  elementsList[i] = element;
-}
-//Освобождаемся от элементов в разметке
-elements.innerHTML = '';
+  elementName.textContent = name;
+  elementImage.src = url;
+  elementImage.alt = name;
 
-//Записываем новые значения element в elements
-for (let i = 0; i < elementsList.length; i++) {
-  elements.append(elementsList[i]);
+  const likeButton = element.querySelector('.element__like-button');
+  likeButton.addEventListener('click', function (evt) {
+    evt.target.classList.toggle('element__like-button_active');
+  });
+  const deleteButton = element.querySelector('.element__delete-button');
+  deleteButton.addEventListener('click', function (evt) {
+    const deleteCard = evt.target.parentElement;
+    deleteCard.remove();
+  });
+  elementImage.addEventListener('click', function (evt) {
+    const viewerPopUp = document.querySelector('.popup_opacity_photo-viewer');//Исправить название класса!!!
+    viewerPopUp.classList.toggle('popup_opened');
+    const viewerImage = viewerPopUp.querySelector('.popup__image');
+    viewerImage.src = elementImage.src;
+    viewerImage.alt = elementName.textContent;
+    const caption = viewerPopUp.querySelector('.popup__caption');
+    caption.textContent = elementName.textContent
+  });
+  return element
 }
+
+
+function addCard(card) {
+  elements.prepend(card);
+}
+
+for (let i = 0; i < initialCards.length; i++) {
+  const newCard = createCard(initialCards[i].name, initialCards[i].link);
+  addCard(newCard);
+}
+
 //----------------------------------------------------------
 //Форма добавления карточки
 //----------------------------------------------------------
 //Копируем popUp
 const popUpAddCard = popUp.cloneNode(true);
-
 //Изменяем имя формы
 const formPopUpAddCard = popUpAddCard.querySelector('.popup__form');
 formPopUpAddCard.name = 'add-form';
@@ -120,17 +142,24 @@ popupAddCardCloseButton.addEventListener('click', togglePopUpAddCard);
 
 //Добавляем возможность добавлять карточки
 const formAddElement = popUpAddCard.querySelector('.popup__form');
+
 function formAddSubmitHandler(evt) {
   evt.preventDefault();
-  const element = elements.querySelector('.element').cloneNode(true);
-  const elementImage = element.querySelector('.element__image');
-  const elementName = element.querySelector('.element__title');
-  elementImage.src = formAddElement.querySelector('.popup__input_name_image-url').value;
-  elementName.textContent = formAddElement.querySelector('.popup__input_name_image-title').value;
-  elements.prepend(element);
-  formAddElement.querySelector('.popup__input_name_image-url').value = '';
+  let name = formAddElement.querySelector('.popup__input_name_image-title').value;
+  let url = formAddElement.querySelector('.popup__input_name_image-url').value;
+  addCard(createCard(name, url));
   formAddElement.querySelector('.popup__input_name_image-title').value = '';
+  formAddElement.querySelector('.popup__input_name_image-url').value = '';
   togglePopUpAddCard();
 }
+
 formAddElement.addEventListener('submit', formAddSubmitHandler);
+
+//Подключаем форму просмотра
+
+const viewerPopUp = document.querySelector('.popup_opacity_photo-viewer');
+const closeViewerButton = viewerPopUp.querySelector('.popup__close-button');
+closeViewerButton.addEventListener('click', function (evt) {
+  viewerPopUp.classList.remove('popup_opened');
+});
 
