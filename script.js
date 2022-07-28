@@ -157,7 +157,7 @@ function formAddSubmitHandler(evt) {
 
 formAddElement.addEventListener('submit', formAddSubmitHandler);
 
-//Подключаем форму просмотра
+// подключаем форму просмотра
 const viewerPopUp = document.querySelector('.popup_opacity_photo-viewer');
 const closeViewerButton = viewerPopUp.querySelector('.popup__close-button');
 closeViewerButton.addEventListener('click', function () {
