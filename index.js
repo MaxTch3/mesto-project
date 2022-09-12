@@ -98,6 +98,12 @@ function addCardFromForm(evt) {
   closePopup(cardPopup);
 };
 
+function closePopupEventHandler(evt) {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(evt.target);
+  }
+};
+
 profileEditButton.addEventListener('click', function () {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
@@ -123,6 +129,10 @@ formAddCard.addEventListener('submit', addCardFromForm);
 buttonCloseImagePopup.addEventListener('click', function () {
   closePopup(imagePopup)
 });
+
+profilePopup.addEventListener('click', closePopupEventHandler);
+cardPopup.addEventListener('click', closePopupEventHandler);
+imagePopup.addEventListener('click', closePopupEventHandler);
 
 initialCards.forEach((item) => {
   const newCard = createCard(item.name, item.link);
