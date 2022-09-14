@@ -134,6 +134,14 @@ profilePopup.addEventListener('click', closePopupEventHandler);
 cardPopup.addEventListener('click', closePopupEventHandler);
 imagePopup.addEventListener('click', closePopupEventHandler);
 
+document.addEventListener('keydown', function(evt) {
+  if (evt.key === 'Escape') {
+    closePopup(profilePopup);
+    closePopup(cardPopup);
+    closePopup(imagePopup);
+  }
+})
+
 initialCards.forEach((item) => {
   const newCard = createCard(item.name, item.link);
   addCard(newCard);
