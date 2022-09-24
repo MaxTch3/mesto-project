@@ -60,7 +60,8 @@ function closePopup(popUp) {
   errorElements.forEach((errorElement) => {
     errorElement.classList.remove('popup__input-error_active');
     errorElement.textContent = '';
-  })
+  });
+  popUp.querySelector('.popup__submit').disabled = true;
 };
 
 function modifyProfileData(evt) {
@@ -144,7 +145,7 @@ profilePopup.addEventListener('mousedown', closePopupEventHandler);
 cardPopup.addEventListener('mousedown', closePopupEventHandler);
 imagePopup.addEventListener('mousedown', closePopupEventHandler);
 
-document.addEventListener('keydown', function(evt) {
+document.addEventListener('keydown', function (evt) {
   if (evt.key === 'Escape') {
     closePopup(profilePopup);
     closePopup(cardPopup);
@@ -174,6 +175,12 @@ const hideInputError = (formElement, inputElement) => {
 };
 
 const isValid = (formElement, inputElement) => {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity("Разрешены латинские буквы, кириллические буквы, знаки дефиса и пробелы ");
+  } else {
+    inputElement.setCustomValidity("");
+  }
+
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage);
   } else {
@@ -181,11 +188,28 @@ const isValid = (formElement, inputElement) => {
   }
 };
 
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid
+  })
+};
+
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.disabled = false;
+  }
+}
+
 const setEventListeners = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+  const buttonElement = formElement.querySelector('.popup__submit');
+  toggleButtonState(inputList, buttonElement);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      isValid(formElement, inputElement)
+      isValid(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
     });
   });
 };

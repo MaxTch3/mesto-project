@@ -56,12 +56,12 @@
       <form class="popup__form" name="edit-form" novalidate>
         <label class="popup__field">
           <input id="name-input" class="popup__input popup__input_name_name-and-surname" name="name-and-surname"
-            type="text" required minlength="2" maxlength="40">
+            type="text" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$">
           <span class="name-input-error popup__input-error"></span>
         </label>
         <label class="popup__field">
           <input id="work-input" class="popup__input popup__input_name_work" name="work" type="text" required
-            minlength="2" maxlength="200">
+            minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$">
           <span class="work-input-error popup__input-error"></span>
         </label>
 
@@ -101,7 +101,7 @@
     </div>
   </div>
 
-  <script src="./index.js"></script>
+  <script src="./src/index.js"></script>
 
 </body>
 
