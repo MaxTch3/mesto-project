@@ -174,7 +174,7 @@ function hideInputError(formElement, inputElement) {
 
 function isValid(formElement, inputElement) {
   if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity("Разрешены латинские буквы, кириллические буквы, знаки дефиса и пробелы ");
+    inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
   } else {
     inputElement.setCustomValidity("");
   }
