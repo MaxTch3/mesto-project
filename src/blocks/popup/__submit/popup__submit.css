@@ -16,15 +16,20 @@
   transition: opacity 0.2s ease;
 }
 
-.popup__submit:hover {
-  opacity: 0.8;
-}
-
 @media screen and (max-width: 450px) {
   .popup__submit {
     margin-top: 45px;
     min-height: 46px;
     font-size: 14px;
-
   }
+}
+
+.popup__submit:hover {
+  opacity: 0.8;
+}
+
+.popup__submit:disabled {
+  border: 1px solid #c4c4c4;
+  background-color: #fff;
+  color: #c4c4c4;
 }
