@@ -1,4 +1,4 @@
-import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput } from "./index.js";
+import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput } from "../index.js";
 import { closePopup } from "./modal.js";
 import createCard from "./card.js";
 
@@ -21,5 +21,3 @@ export function addCardFromForm(evt) {
   formAddCard.reset();
   closePopup(cardPopup);
 };
-
-

@@ -1,4 +1,4 @@
-import { cardElement, viewerImage, imagePopup, captionImage } from "./index.js";
+import { cardElement, viewerImage, imagePopup, captionImage } from "../index.js";
 
 export default function createCard(name, url) {
   const element = cardElement.cloneNode(true)

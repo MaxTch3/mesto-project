@@ -1,4 +1,3 @@
-
 export function openPopup(popUp) {
   popUp.classList.add('popup_opened')
 };

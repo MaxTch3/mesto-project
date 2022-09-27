@@ -4,20 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
   <title>Место</title>
 </head>
 
 <body class="body">
   <div class="page">
     <header class="header">
-      <img class="logo" src="./images/logo-mesto.svg" alt="Логотип">
+      <img class="logo" src="<%=require('./images/logo-mesto.svg')%>" alt="Логотип">
     </header>
 
     <main>
       <section class="profile">
         <div class="profile__avatar-and-info">
-          <img class="profile__image" src="./images/profile-image.jpg" alt="Фото профиля">
+          <img class="profile__image" src="<%=require('./images/profile-image.jpg')%>" alt="Фото профиля">
           <div class="profile__info">
             <div class="profile__title-and-edit-button">
               <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -76,8 +75,8 @@
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" name="add-form" novalidate>
         <label class="popup__field">
-          <input id="image-title-input" class="popup__input popup__input_name_image-title" name="image-title" type="text"
-            placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$">
+          <input id="image-title-input" class="popup__input popup__input_name_image-title" name="image-title"
+            type="text" placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$">
           <span class="image-title-input-error popup__input-error"></span>
         </label>
         <label class="popup__field">
@@ -100,12 +99,6 @@
       <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
     </div>
   </div>
-
-  <script type="module" src="./src/components/card.js"></script>
-  <script type="module" src="./src/components/modal.js"></script>
-  <script type="module" src="./src/components/utils.js"></script>
-  <script type="module" src="./src/components/validate.js"></script>
-  <script type="module" src="./src/components/index.js"></script>
 
 </body>
 
