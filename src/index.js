@@ -1,5 +1,3 @@
-
-
 import './pages/index.css';
 import createCard from './components/card.js'
 import { modifyProfileData, addCardFromForm, addCard } from "./components/utils.js";
@@ -65,7 +63,13 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
-enableValidation();
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+});
 
 const initialCards = [
   {
