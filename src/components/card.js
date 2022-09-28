@@ -1,4 +1,5 @@
 import { cardElement, viewerImage, imagePopup, captionImage } from "../index.js";
+import { openPopup } from "./modal.js";
 
 export default function createCard(name, url) {
   const element = cardElement.cloneNode(true)
@@ -16,8 +17,8 @@ export default function createCard(name, url) {
     const cardToDelete = evt.target.parentElement;
     cardToDelete.remove();
   });
-  elementImage.addEventListener('click', function (evt) {
-    imagePopup.classList.toggle('popup_opened');
+  elementImage.addEventListener('click', function () {
+    openPopup(imagePopup);
     viewerImage.src = elementImage.src;
     viewerImage.alt = elementName.textContent;
     captionImage.textContent = elementName.textContent

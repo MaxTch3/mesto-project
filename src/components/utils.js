@@ -21,3 +21,27 @@ export function addCardFromForm(evt) {
   formAddCard.reset();
   closePopup(cardPopup);
 };
+
+export function resetForm(popup) {
+  popup.querySelector('.popup__form').reset();
+  const inputElements = popup.querySelectorAll('.popup__input');
+  const errorElements = popup.querySelectorAll('.popup__input-error');
+  inputElements.forEach((inputElement) => {
+    inputElement.classList.remove('popup__input_type_error');
+  });
+  errorElements.forEach((errorElement) => {
+    errorElement.classList.remove('popup__input-error_active');
+    errorElement.textContent = '';
+  });
+  popup.querySelector('.popup__submit').disabled = true;
+}
+
+export function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+    if (openedPopup === profilePopup || openedPopup === cardPopup) {
+      resetForm(openedPopup)
+    }
+  }
+}
