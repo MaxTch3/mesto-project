@@ -27,20 +27,15 @@ popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
     if (evt.target.classList.contains('popup_opened')) {
       closePopup(popup);
-      if (popup === profilePopup || popup === cardPopup) {
-        resetForm(popup)
-      }
     }
     if (evt.target.classList.contains('popup__close-button')) {
       closePopup(popup);
-      if (popup === profilePopup || popup === cardPopup) {
-        resetForm(popup)
-      }
     }
   })
 });
 
 profileEditButton.addEventListener('click', function () {
+  resetForm(profilePopup);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   openPopup(profilePopup)
@@ -49,6 +44,7 @@ profileEditButton.addEventListener('click', function () {
 formEditProfile.addEventListener('submit', modifyProfileData);
 
 profileAddButton.addEventListener('click', function () {
+  resetForm(cardPopup)
   openPopup(cardPopup)
 });
 
