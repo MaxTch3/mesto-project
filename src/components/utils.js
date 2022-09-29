@@ -36,12 +36,3 @@ export function resetForm(popup) {
   popup.querySelector('.popup__submit').disabled = true;
 }
 
-export function closeByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-    if (openedPopup === profilePopup || openedPopup === cardPopup) {
-      resetForm(openedPopup)
-    }
-  }
-}
