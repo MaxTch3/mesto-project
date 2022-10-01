@@ -21,7 +21,38 @@ export const imageUrlInput = formAddCard.querySelector('.popup__input_name_image
 export const imagePopup = document.querySelector('.popup_type_image');
 export const viewerImage = imagePopup.querySelector('.popup__image');
 export const captionImage = imagePopup.querySelector('.popup__caption');
-const popups = document.querySelectorAll('.popup')
+const popups = document.querySelectorAll('.popup');
+
+function getUserInfo() {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
+    method: 'GET',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+    }
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      profileTitle.textContent = result.name;
+      profileSubtitle.textContent = result.about;
+    });
+};
+
+export function setUserInfo(name, job) {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
+    method: 'PATCH',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name,
+      about: job
+    })
+  });
+}
+
+getUserInfo();
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
@@ -58,36 +89,35 @@ enableValidation({
   errorClass: 'popup__input-error_active'
 });
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+function getInitialCard() {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
+    method: 'GET',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+    }
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      result.forEach((item) => {
+        const newCard = createCard(item.name, item.link);
+        addCard(newCard);
+      });
+    });
+};
 
-initialCards.forEach((item) => {
-  const newCard = createCard(item.name, item.link);
-  addCard(newCard);
-});
+getInitialCard();
 
-
+export function postNewCard(name, link) {
+    return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
+      method: 'POST',
+      headers: {
+        authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        link: link
+      })
+    })
+}

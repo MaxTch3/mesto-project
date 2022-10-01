@@ -1,4 +1,4 @@
-import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput } from "../index.js";
+import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput, setUserInfo, postNewCard } from "../index.js";
 import { closePopup } from "./modal.js";
 import createCard from "./card.js";
 
@@ -6,6 +6,7 @@ export function modifyProfileData(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
+  setUserInfo(nameInput.value, jobInput.value)
   closePopup(profilePopup);
 };
 
@@ -18,6 +19,7 @@ export function addCardFromForm(evt) {
   const name = imageNameInput.value;
   const url = imageUrlInput.value;
   addCard(createCard(name, url));
+  postNewCard(name, url);
   formAddCard.reset();
   closePopup(cardPopup);
 };
