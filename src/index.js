@@ -100,7 +100,8 @@ function getInitialCard() {
     .then((result) => {
       console.log(result);
       result.forEach((item) => {
-        const newCard = createCard(item.name, item.link);
+        const newCard = createCard(item.name, item.link, item.likes.length);
+        console.log(item.likes)
         addCard(newCard);
       });
     });
