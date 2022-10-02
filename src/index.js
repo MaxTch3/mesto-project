@@ -23,8 +23,11 @@ export const viewerImage = imagePopup.querySelector('.popup__image');
 export const captionImage = imagePopup.querySelector('.popup__caption');
 const popups = document.querySelectorAll('.popup');
 
-function getUserInfo() {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
+let profileId = "";
+let cardId = "";
+let like;
+
+  fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
     method: 'GET',
     headers: {
       authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
@@ -35,8 +38,10 @@ function getUserInfo() {
       console.log(result);
       profileTitle.textContent = result.name;
       profileSubtitle.textContent = result.about;
+      profileId = result._id;
+      console.log(profileId)
     });
-};
+
 
 export function setUserInfo(name, job) {
   return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
@@ -51,8 +56,6 @@ export function setUserInfo(name, job) {
     })
   });
 }
-
-getUserInfo();
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
@@ -99,8 +102,13 @@ function getInitialCard() {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-      result.forEach((item) => {
-        const newCard = createCard(item.name, item.link, item.likes.length);
+      result.reverse().forEach((item) => {
+        const idMatch = item.owner._id === profileId;
+        like = item.likes.some(el => el._id == profileId);
+        console.log(like);
+        cardId = item._id;
+        console.log(idMatch);
+        const newCard = createCard(item.name, item.link, item.likes.length, idMatch, cardId, like);
         addCard(newCard);
       });
     });
@@ -109,15 +117,15 @@ function getInitialCard() {
 getInitialCard();
 
 export function postNewCard(name, link) {
-    return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
-      method: 'POST',
-      headers: {
-        authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        link: link
-      })
+  return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
+    method: 'POST',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name,
+      link: link
     })
+  })
 }

@@ -1,7 +1,7 @@
 import { cardElement, viewerImage, imagePopup, captionImage } from "../index.js";
 import { openPopup } from "./modal.js";
 
-export default function createCard(name, url, like) {
+export default function createCard(name, url, likeNumber, idMatch, cardId, like) {
   const element = cardElement.cloneNode(true)
   const elementImage = element.querySelector('.element__image');
   const elementName = element.querySelector('.element__title');
@@ -11,14 +11,50 @@ export default function createCard(name, url, like) {
   elementName.textContent = name;
   elementImage.src = url;
   elementImage.alt = name;
-  elementLikeNumber.textContent = like;
+  elementLikeNumber.textContent = likeNumber;
+  if (like === true) {
+    buttonLike.classList.add('element__like-button_active');
+  };
   buttonLike.addEventListener('click', function (evt) {
+    if (!buttonLike.classList.contains('element__like-button_active')) {
+      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/likes/${cardId}`,
+        {
+          method: 'PUT',
+          headers: {
+            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+          }
+        });
+      likeNumber++;
+      elementLikeNumber.textContent = likeNumber;
+    } else {
+      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/likes/${cardId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+          }
+        });
+      likeNumber--;
+      elementLikeNumber.textContent = likeNumber;
+    }
     evt.target.classList.toggle('element__like-button_active');
   });
-  buttonDelete.addEventListener('click', function (evt) {
-    const cardToDelete = evt.target.parentElement;
-    cardToDelete.remove();
-  });
+  if (!idMatch) {
+    buttonDelete.disabled = true
+  } else {
+    buttonDelete.addEventListener('click', function (evt) {
+      const cardToDelete = evt.target.parentElement;
+      cardToDelete.remove();
+      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/${cardId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+          }
+        });
+    });
+  }
+
   elementImage.addEventListener('click', function () {
     openPopup(imagePopup);
     viewerImage.src = elementImage.src;

@@ -18,7 +18,11 @@ export function addCardFromForm(evt) {
   evt.preventDefault();
   const name = imageNameInput.value;
   const url = imageUrlInput.value;
-  addCard(createCard(name, url));
+  const likeNumber = 0;
+  const idMatch = true;
+  const cardId = 0;
+  const like = false;
+  addCard(createCard(name, url, likeNumber, idMatch, cardId, like));
   postNewCard(name, url);
   formAddCard.reset();
   closePopup(cardPopup);
