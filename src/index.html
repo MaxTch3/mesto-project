@@ -16,7 +16,11 @@
     <main>
       <section class="profile">
         <div class="profile__avatar-and-info">
-          <img class="profile__image" src="<%=require('./images/profile-image.jpg')%>" alt="Фото профиля">
+          <div class="profile__avatar-container">
+            <img class="profile__image" src="<%=require('./images/profile-image.jpg')%>" alt="Фото профиля">
+            <button class="profile__avatar-button"></button>
+          </div>
+
           <div class="profile__info">
             <div class="profile__title-and-edit-button">
               <h1 class="profile__title"></h1>

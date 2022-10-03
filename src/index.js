@@ -4,6 +4,7 @@ import { modifyProfileData, addCardFromForm, addCard, resetForm } from "./compon
 import { openPopup, closePopup } from "./components/modal.js";
 import enableValidation from "./components/validate.js";
 
+const avatarEditButton = document.querySelector('.profile__avatar-button');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 export const profileTitle = document.querySelector('.profile__title');
@@ -21,26 +22,27 @@ export const imageUrlInput = formAddCard.querySelector('.popup__input_name_image
 export const imagePopup = document.querySelector('.popup_type_image');
 export const viewerImage = imagePopup.querySelector('.popup__image');
 export const captionImage = imagePopup.querySelector('.popup__caption');
+const avatarPopup = document.querySelector('.popup_type_avatar');
 const popups = document.querySelectorAll('.popup');
 
 let profileId = "";
 let cardId = "";
 let like;
 
-  fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
-    method: 'GET',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-    }
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      profileTitle.textContent = result.name;
-      profileSubtitle.textContent = result.about;
-      profileId = result._id;
-      console.log(profileId)
-    });
+fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
+  method: 'GET',
+  headers: {
+    authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
+  }
+})
+  .then((res) => res.json())
+  .then((result) => {
+    console.log(result);
+    profileTitle.textContent = result.name;
+    profileSubtitle.textContent = result.about;
+    profileId = result._id;
+    console.log(profileId)
+  });
 
 
 export function setUserInfo(name, job) {
@@ -68,6 +70,11 @@ popups.forEach((popup) => {
   })
 });
 
+avatarEditButton.addEventListener('click', function () {
+  resetForm(avatarPopup);
+  openPopup(avatarPopup)
+})
+
 profileEditButton.addEventListener('click', function () {
   resetForm(profilePopup);
   nameInput.value = profileTitle.textContent;
@@ -81,6 +88,7 @@ profileAddButton.addEventListener('click', function () {
   resetForm(cardPopup)
   openPopup(cardPopup)
 });
+
 
 formAddCard.addEventListener('submit', addCardFromForm);
 
