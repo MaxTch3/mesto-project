@@ -108,16 +108,24 @@ function patchAvatar(avatar) {
   });
 }
 
-function upgradeAvatar(evt) {
+// function upgradeAvatar(evt) {
+//   evt.preventDefault();
+//   renderLoading(true);
+//   const avatarUrl = avatarUrlInput.value;
+//   patchAvatar(avatarUrl);
+//   avatarImage.src = avatarUrl;
+//   // renderLoading(false)
+//   closePopup(avatarPopup);
+// }
+formAddCard.addEventListener('submit', addCardFromForm);
+
+formAvatarEdit.addEventListener('submit', function(evt) {
   evt.preventDefault();
   const avatarUrl = avatarUrlInput.value;
   patchAvatar(avatarUrl);
   avatarImage.src = avatarUrl;
   closePopup(avatarPopup);
-}
-formAddCard.addEventListener('submit', addCardFromForm);
-
-formAvatarEdit.addEventListener('submit', upgradeAvatar);
+});
 
 enableValidation({
   formSelector: '.popup__form',
@@ -163,4 +171,13 @@ export function postNewCard(name, link) {
       link: link
     })
   })
+}
+
+function renderLoading(isLoading, form) {
+  const submitButton = form.querySelector('.popup__submit');
+  if (isLoading) {
+    submitButton.classList.add('popup__submit_loading')
+  } else {
+    submitButton.classList.remove('popup__submit_loading')
+  };
 }

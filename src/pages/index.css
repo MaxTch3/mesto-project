@@ -50,3 +50,7 @@
 @import url(../blocks/popup/__container/_size/popup__container_size_m.css);
 @import url(../blocks/profile/__avatar-button/profile__avatar-button.css);
 @import url(../blocks/profile/__avatar-container/profile__avatar-container.css);
+@import url(../blocks/popup/__submit/_place/popup__submit_place_profile.css);
+@import url(../blocks/popup/__submit/_place/popup__submit_place_card.css);
+@import url(../blocks/popup/__submit/_place/popup__submit_place_avatar.css);
+@import url(../blocks/popup/__submit/_loading/popup__submit_loading.css);
