@@ -4,6 +4,7 @@ import { modifyProfileData, addCardFromForm, addCard, resetForm } from "./compon
 import { openPopup, closePopup } from "./components/modal.js";
 import enableValidation from "./components/validate.js";
 
+const avatarImage = document.querySelector('.profile__image');
 const avatarEditButton = document.querySelector('.profile__avatar-button');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
@@ -23,6 +24,8 @@ export const imagePopup = document.querySelector('.popup_type_image');
 export const viewerImage = imagePopup.querySelector('.popup__image');
 export const captionImage = imagePopup.querySelector('.popup__caption');
 const avatarPopup = document.querySelector('.popup_type_avatar');
+const formAvatarEdit = avatarPopup.querySelector('.popup__form');
+const avatarUrlInput = formAvatarEdit.querySelector('.popup__input_name_avatar-url');
 const popups = document.querySelectorAll('.popup');
 
 let profileId = "";
@@ -40,6 +43,7 @@ fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
     console.log(result);
     profileTitle.textContent = result.name;
     profileSubtitle.textContent = result.about;
+    avatarImage.src = result.avatar;
     profileId = result._id;
     console.log(profileId)
   });
@@ -90,7 +94,30 @@ profileAddButton.addEventListener('click', function () {
 });
 
 
+
+function patchAvatar(avatar) {
+  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me/avatar', {
+    method: 'PATCH',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      avatar: avatar
+    })
+  });
+}
+
+function upgradeAvatar(evt) {
+  evt.preventDefault();
+  const avatarUrl = avatarUrlInput.value;
+  patchAvatar(avatarUrl);
+  avatarImage.src = avatarUrl;
+  closePopup(avatarPopup);
+}
 formAddCard.addEventListener('submit', addCardFromForm);
+
+formAvatarEdit.addEventListener('submit', upgradeAvatar);
 
 enableValidation({
   formSelector: '.popup__form',
