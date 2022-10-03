@@ -1,4 +1,5 @@
 import { cardElement, viewerImage, imagePopup, captionImage } from "../index.js";
+import { deleteCard, dislikeCard, likeCard } from "./api.js";
 import { openPopup } from "./modal.js";
 
 export default function createCard(name, url, likeNumber, idMatch, cardId, like) {
@@ -17,23 +18,11 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
   };
   buttonLike.addEventListener('click', function (evt) {
     if (!buttonLike.classList.contains('element__like-button_active')) {
-      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/likes/${cardId}`,
-        {
-          method: 'PUT',
-          headers: {
-            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-          }
-        });
+      likeCard(cardId);
       likeNumber++;
       elementLikeNumber.textContent = likeNumber;
     } else {
-      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/likes/${cardId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-          }
-        });
+      dislikeCard(cardId);
       likeNumber--;
       elementLikeNumber.textContent = likeNumber;
     }
@@ -45,13 +34,7 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
     buttonDelete.addEventListener('click', function (evt) {
       const cardToDelete = evt.target.parentElement;
       cardToDelete.remove();
-      fetch(`https://nomoreparties.co/v1/plus-cohort-15/cards/${cardId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-          }
-        });
+      deleteCard(cardId);
     });
   }
 

@@ -3,6 +3,7 @@ import createCard from './components/card.js'
 import { modifyProfileData, addCardFromForm, addCard, resetForm } from "./components/utils.js";
 import { openPopup, closePopup } from "./components/modal.js";
 import enableValidation from "./components/validate.js";
+import { getInitialCard, getUserInfo, patchAvatar } from './components/api.js';
 
 const avatarImage = document.querySelector('.profile__image');
 const avatarEditButton = document.querySelector('.profile__avatar-button');
@@ -32,36 +33,27 @@ let profileId = "";
 let cardId = "";
 let like;
 
-fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
-  method: 'GET',
-  headers: {
-    authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-  }
-})
-  .then((res) => res.json())
+getUserInfo()
   .then((result) => {
     console.log(result);
     profileTitle.textContent = result.name;
     profileSubtitle.textContent = result.about;
     avatarImage.src = result.avatar;
     profileId = result._id;
-    console.log(profileId)
   });
 
-
-export function setUserInfo(name, job) {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me', {
-    method: 'PATCH',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name: name,
-      about: job
-    })
+  getInitialCard()
+  .then((result) => {
+    console.log(result);
+    result.reverse().forEach((item) => {
+      const idMatch = item.owner._id === profileId;
+      like = item.likes.some(el => el._id == profileId);
+      console.log(like);
+      cardId = item._id;
+      const newCard = createCard(item.name, item.link, item.likes.length, idMatch, cardId, like);
+      addCard(newCard);
+    });
   });
-}
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
@@ -93,33 +85,9 @@ profileAddButton.addEventListener('click', function () {
   openPopup(cardPopup)
 });
 
-
-
-function patchAvatar(avatar) {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me/avatar', {
-    method: 'PATCH',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      avatar: avatar
-    })
-  });
-}
-
-// function upgradeAvatar(evt) {
-//   evt.preventDefault();
-//   renderLoading(true);
-//   const avatarUrl = avatarUrlInput.value;
-//   patchAvatar(avatarUrl);
-//   avatarImage.src = avatarUrl;
-//   // renderLoading(false)
-//   closePopup(avatarPopup);
-// }
 formAddCard.addEventListener('submit', addCardFromForm);
 
-formAvatarEdit.addEventListener('submit', function(evt) {
+formAvatarEdit.addEventListener('submit', function (evt) {
   evt.preventDefault();
   const avatarUrl = avatarUrlInput.value;
   patchAvatar(avatarUrl);
@@ -135,43 +103,11 @@ enableValidation({
   errorClass: 'popup__input-error_active'
 });
 
-function getInitialCard() {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
-    method: 'GET',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc'
-    }
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      result.reverse().forEach((item) => {
-        const idMatch = item.owner._id === profileId;
-        like = item.likes.some(el => el._id == profileId);
-        console.log(like);
-        cardId = item._id;
-        console.log(idMatch);
-        const newCard = createCard(item.name, item.link, item.likes.length, idMatch, cardId, like);
-        addCard(newCard);
-      });
-    });
-};
 
-getInitialCard();
 
-export function postNewCard(name, link) {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/cards', {
-    method: 'POST',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name: name,
-      link: link
-    })
-  })
-}
+
+
+
 
 function renderLoading(isLoading, form) {
   const submitButton = form.querySelector('.popup__submit');

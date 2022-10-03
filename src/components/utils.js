@@ -1,6 +1,7 @@
-import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput, setUserInfo, postNewCard } from "../index.js";
+import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput } from "../index.js";
 import { closePopup } from "./modal.js";
 import createCard from "./card.js";
+import { postNewCard, setUserInfo } from "./api.js";
 
 export function modifyProfileData(evt) {
   evt.preventDefault();
