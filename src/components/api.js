@@ -5,6 +5,7 @@ const config = {
     'Content-Type': 'application/json'
   }
 }
+
 export const getUserInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: 'GET',

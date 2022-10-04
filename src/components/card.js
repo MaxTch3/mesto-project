@@ -18,11 +18,17 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
   };
   buttonLike.addEventListener('click', function (evt) {
     if (!buttonLike.classList.contains('element__like-button_active')) {
-      likeCard(cardId);
+      likeCard(cardId)
+      .catch((err) => {
+        console.log(err)
+      });
       likeNumber++;
       elementLikeNumber.textContent = likeNumber;
     } else {
-      dislikeCard(cardId);
+      dislikeCard(cardId)
+      .catch((err) => {
+        console.log(err)
+      });
       likeNumber--;
       elementLikeNumber.textContent = likeNumber;
     }
@@ -34,7 +40,10 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
     buttonDelete.addEventListener('click', function (evt) {
       const cardToDelete = evt.target.parentElement;
       cardToDelete.remove();
-      deleteCard(cardId);
+      deleteCard(cardId)
+      .catch((err) => {
+        console.log(err)
+      })
     });
   }
 
