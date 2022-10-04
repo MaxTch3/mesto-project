@@ -1,0 +1,10 @@
+.profile__avatar-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__avatar-container:hover .profile__avatar-button {
+  opacity: 1;
+}

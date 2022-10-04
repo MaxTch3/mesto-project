@@ -1,0 +1,7 @@
+.popup__submit_loading {
+  pointer-events: none;
+}
+
+.popup__submit_loading:before {
+  content: 'Сохранение...'
+}
