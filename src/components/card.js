@@ -1,8 +1,8 @@
-import { cardElement, viewerImage, imagePopup, captionImage } from "../index.js";
-import { deleteCard, dislikeCard, likeCard } from "./api.js";
+import { handleLikeCard, handleDeleteCard } from "../index.js";
 import { openPopup } from "./modal.js";
+import { cardElement, viewerImage, imagePopup, captionImage } from "./utils.js";
 
-export default function createCard(name, url, likeNumber, idMatch, cardId, like) {
+export function createCard(name, url, likeNumber, idMatch, cardId, like) {
   const element = cardElement.cloneNode(true)
   const elementImage = element.querySelector('.element__image');
   const elementName = element.querySelector('.element__title');
@@ -16,34 +16,16 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
   if (like === true) {
     buttonLike.classList.add('element__like-button_active');
   };
+
   buttonLike.addEventListener('click', function (evt) {
-    if (!buttonLike.classList.contains('element__like-button_active')) {
-      likeCard(cardId)
-        .catch((err) => {
-          console.log(err)
-        });
-      likeNumber++;
-      elementLikeNumber.textContent = likeNumber;
-    } else {
-      dislikeCard(cardId)
-        .catch((err) => {
-          console.log(err)
-        });
-      likeNumber--;
-      elementLikeNumber.textContent = likeNumber;
-    }
-    evt.target.classList.toggle('element__like-button_active');
+    handleLikeCard(evt, cardId, elementLikeNumber)
   });
+
   if (!idMatch) {
     buttonDelete.disabled = true
   } else {
     buttonDelete.addEventListener('click', function (evt) {
-      const cardToDelete = evt.target.parentElement;
-      cardToDelete.remove();
-      deleteCard(cardId)
-        .catch((err) => {
-          console.log(err)
-        })
+      handleDeleteCard(evt, cardId);
     });
   }
 
@@ -55,4 +37,18 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
   });
   return element
 };
+
+export function toggleLike(evt, numberLike, elementLikeNumber) {
+  if (!evt.target.classList.contains('element__like-button_active')) {
+    evt.target.classList.add('element__like-button_active');
+  } else {
+    evt.target.classList.remove('element__like-button_active');
+  }
+  elementLikeNumber.textContent = numberLike;
+}
+
+export function removeCard(evt) {
+  const cardToDelete = evt.target.parentElement;
+  cardToDelete.remove();
+}
 

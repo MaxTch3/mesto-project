@@ -1,25 +1,26 @@
-import { profileTitle, profileSubtitle, profilePopup, imageNameInput, imageUrlInput, formAddCard, cardPopup, cardsContainer, nameInput, jobInput, avatarPopup, avatarUrlInput, avatarImage } from "../index.js";
-import { closePopup } from "./modal.js";
-import createCard from "./card.js";
-import { patchAvatar, postNewCard, setUserInfo } from "./api.js";
-
-export function addCard(card) {
-  cardsContainer.prepend(card);
-};
-
-export function resetForm(popup) {
-  popup.querySelector('.popup__form').reset();
-  const inputElements = popup.querySelectorAll('.popup__input');
-  const errorElements = popup.querySelectorAll('.popup__input-error');
-  inputElements.forEach((inputElement) => {
-    inputElement.classList.remove('popup__input_type_error');
-  });
-  errorElements.forEach((errorElement) => {
-    errorElement.classList.remove('popup__input-error_active');
-    errorElement.textContent = '';
-  });
-  popup.querySelector('.popup__submit').disabled = true;
-}
+export const avatarImage = document.querySelector('.profile__image');
+export const avatarEditButton = document.querySelector('.profile__avatar-button');
+export const profileEditButton = document.querySelector('.profile__edit-button');
+export const profileAddButton = document.querySelector('.profile__add-button');
+export const profileTitle = document.querySelector('.profile__title');
+export const profileSubtitle = document.querySelector('.profile__subtitle');
+export const profilePopup = document.querySelector('.popup_type_profile');
+export const formEditProfile = profilePopup.querySelector('.popup__form');
+export const nameInput = formEditProfile.querySelector('.popup__input_name_name-and-surname');
+export const jobInput = formEditProfile.querySelector('.popup__input_name_work');
+export const cardsContainer = document.querySelector('.elements');
+export const cardElement = cardsContainer.querySelector('#element').content;
+export const cardPopup = document.querySelector('.popup_type_card');
+export const formAddCard = cardPopup.querySelector('.popup__form');
+export const imageNameInput = formAddCard.querySelector('.popup__input_name_image-title');
+export const imageUrlInput = formAddCard.querySelector('.popup__input_name_image-url');
+export const imagePopup = document.querySelector('.popup_type_image');
+export const viewerImage = imagePopup.querySelector('.popup__image');
+export const captionImage = imagePopup.querySelector('.popup__caption');
+export const avatarPopup = document.querySelector('.popup_type_avatar');
+export const formAvatarEdit = avatarPopup.querySelector('.popup__form');
+export const avatarUrlInput = formAvatarEdit.querySelector('.popup__input_name_avatar-url');
+export const popups = document.querySelectorAll('.popup');
 
 export function renderLoading(isLoading, form) {
   const submitButton = form.querySelector('.popup__submit');
@@ -28,55 +29,4 @@ export function renderLoading(isLoading, form) {
   } else {
     submitButton.classList.remove('popup__submit_loading')
   };
-}
-
-export function modifyProfileData(evt) {
-  evt.preventDefault();
-  renderLoading(true, profilePopup);
-  profileTitle.textContent = nameInput.value;
-  profileSubtitle.textContent = jobInput.value;
-  setUserInfo(nameInput.value, jobInput.value)
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      renderLoading(false, profilePopup)
-    })
-  closePopup(profilePopup);
-};
-
-export function addCardFromForm(evt) {
-  evt.preventDefault();
-  renderLoading(true, cardPopup)
-  const name = imageNameInput.value;
-  const url = imageUrlInput.value;
-  const likeNumber = 0;
-  const idMatch = true;
-  const cardId = 0;
-  const like = false;
-  addCard(createCard(name, url, likeNumber, idMatch, cardId, like));
-  postNewCard(name, url)
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      renderLoading(false, cardPopup)
-    })
-  formAddCard.reset();
-  closePopup(cardPopup);
-};
-
-export function patchAvatarFromForm(evt) {
-  evt.preventDefault();
-  renderLoading(true, avatarPopup)
-  const avatarUrl = avatarUrlInput.value;
-  patchAvatar(avatarUrl)
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      renderLoading(false, avatarPopup)
-    });
-  avatarImage.src = avatarUrl;
-  closePopup(avatarPopup);
 }

@@ -75,7 +75,7 @@ export const dislikeCard = (cardId) => {
 }
 
 export const patchAvatar = (avatar) => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-15/users/me/avatar', {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
