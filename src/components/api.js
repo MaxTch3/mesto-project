@@ -7,7 +7,7 @@ const config = {
 }
 
 function checkResponse(res) {
-  res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
 }
 
 export const getUserInfo = () => {
@@ -15,7 +15,7 @@ export const getUserInfo = () => {
     method: 'GET',
     headers: config.headers
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 };
 
 export const getInitialCard = () => {
@@ -23,7 +23,7 @@ export const getInitialCard = () => {
     method: 'GET',
     headers: config.headers
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }
 
 export const setUserInfo = (name, job) => {
@@ -35,7 +35,7 @@ export const setUserInfo = (name, job) => {
       about: job
     })
   })
-  .then(checkResponse(res))
+    .then((res) => {checkResponse(res)})
 }
 
 export const postNewCard = (name, link) => {
@@ -47,7 +47,7 @@ export const postNewCard = (name, link) => {
       link: link
     })
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }
 
 export const deleteCard = (cardId) => {
@@ -55,7 +55,7 @@ export const deleteCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }
 
 export const likeCard = (cardId) => {
@@ -63,7 +63,7 @@ export const likeCard = (cardId) => {
     method: 'PUT',
     headers: config.headers,
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }
 
 export const dislikeCard = (cardId) => {
@@ -71,7 +71,7 @@ export const dislikeCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers,
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }
 
 export const patchAvatar = (avatar) => {
@@ -82,5 +82,5 @@ export const patchAvatar = (avatar) => {
       avatar: avatar
     })
   })
-  .then(checkResponse(res))
+    .then((res) => checkResponse(res))
 }

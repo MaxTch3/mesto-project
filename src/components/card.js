@@ -19,16 +19,16 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
   buttonLike.addEventListener('click', function (evt) {
     if (!buttonLike.classList.contains('element__like-button_active')) {
       likeCard(cardId)
-      .catch((err) => {
-        console.log(err)
-      });
+        .catch((err) => {
+          console.log(err)
+        });
       likeNumber++;
       elementLikeNumber.textContent = likeNumber;
     } else {
       dislikeCard(cardId)
-      .catch((err) => {
-        console.log(err)
-      });
+        .catch((err) => {
+          console.log(err)
+        });
       likeNumber--;
       elementLikeNumber.textContent = likeNumber;
     }
@@ -41,17 +41,17 @@ export default function createCard(name, url, likeNumber, idMatch, cardId, like)
       const cardToDelete = evt.target.parentElement;
       cardToDelete.remove();
       deleteCard(cardId)
-      .catch((err) => {
-        console.log(err)
-      })
+        .catch((err) => {
+          console.log(err)
+        })
     });
   }
 
   elementImage.addEventListener('click', function () {
-    openPopup(imagePopup);
     viewerImage.src = elementImage.src;
     viewerImage.alt = elementName.textContent;
-    captionImage.textContent = elementName.textContent
+    captionImage.textContent = elementName.textContent;
+    openPopup(imagePopup);
   });
   return element
 };
