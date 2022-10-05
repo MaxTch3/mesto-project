@@ -2,17 +2,22 @@ import { handleLikeCard, handleDeleteCard } from "../index.js";
 import { openPopup } from "./modal.js";
 import { cardElement, viewerImage, imagePopup, captionImage } from "./utils.js";
 
-export function createCard(name, url, likeNumber, idMatch, cardId, like) {
+export function createCard(profileId, item) {
   const element = cardElement.cloneNode(true)
   const elementImage = element.querySelector('.element__image');
   const elementName = element.querySelector('.element__title');
   const buttonLike = element.querySelector('.element__like-button');
   const elementLikeNumber = element.querySelector('.element__like-number');
   const buttonDelete = element.querySelector('.element__delete-button');
-  elementName.textContent = name;
-  elementImage.src = url;
-  elementImage.alt = name;
-  elementLikeNumber.textContent = likeNumber;
+  const like = item.likes.some(el => el._id == profileId);
+  const cardId = item._id;
+  const idMatch = item.owner._id === profileId;
+
+  elementName.textContent = item.name;
+  elementImage.src = item.link;
+  elementImage.alt = item.name;
+  elementLikeNumber.textContent = item.likes.length;
+
   if (like === true) {
     buttonLike.classList.add('element__like-button_active');
   };

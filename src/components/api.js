@@ -35,7 +35,7 @@ export const setUserInfo = (name, job) => {
       about: job
     })
   })
-    .then((res) => {checkResponse(res)})
+    .then((res) => checkResponse(res))
 }
 
 export const postNewCard = (name, link) => {

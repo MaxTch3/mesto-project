@@ -5,81 +5,7 @@ import { openPopup, closePopup } from "./components/modal.js";
 import enableValidation from "./components/validate.js";
 import { deleteCard, dislikeCard, getInitialCard, getUserInfo, likeCard, patchAvatar, postNewCard, setUserInfo } from './components/api.js';
 
-
-
 let profileId = "";
-let cardId = "";
-let like;
-
-getUserInfo()
-  .then((result) => {
-    console.log(result);
-    profileTitle.textContent = result.name;
-    profileSubtitle.textContent = result.about;
-    avatarImage.src = result.avatar;
-    profileId = result._id;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-
-getInitialCard()
-  .then((result) => {
-    result.reverse().forEach((item) => {
-      const idMatch = item.owner._id === profileId;
-      like = item.likes.some(el => el._id == profileId);
-      cardId = item._id;
-      const newCard = createCard(item.name, item.link, item.likes.length, idMatch, cardId, like);
-      addCard(newCard);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-    }
-    if (evt.target.classList.contains('popup__close-button')) {
-      closePopup(popup);
-    }
-  })
-});
-
-avatarEditButton.addEventListener('click', function () {
-  resetForm(avatarPopup);
-  openPopup(avatarPopup)
-})
-
-profileEditButton.addEventListener('click', function () {
-  resetForm(profilePopup);
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileSubtitle.textContent;
-  openPopup(profilePopup)
-});
-
-
-
-profileAddButton.addEventListener('click', function () {
-  resetForm(cardPopup)
-  openPopup(cardPopup)
-});
-
-formEditProfile.addEventListener('submit', modifyProfileData);
-
-formAddCard.addEventListener('submit', addCardFromForm);
-
-formAvatarEdit.addEventListener('submit', patchAvatarFromForm);
-
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-});
 
 function addCard(card) {
   cardsContainer.prepend(card);
@@ -90,12 +16,9 @@ export function addCardFromForm(evt) {
   renderLoading(true, cardPopup)
   const name = imageNameInput.value;
   const url = imageUrlInput.value;
-  const idMatch = true;
-  const like = false;
-
   postNewCard(name, url)
     .then((data) => {
-      addCard(createCard(data.name, data.link, data.likes.length, idMatch, data._id, like));
+      addCard(createCard(profileId, data));
       closePopup(cardPopup);
     })
     .catch((err) => {
@@ -123,7 +46,6 @@ export function resetForm(popup) {
 export function modifyProfileData(evt) {
   evt.preventDefault();
   renderLoading(true, profilePopup);
-
   setUserInfo(nameInput.value, jobInput.value)
     .then(() => {
       profileTitle.textContent = nameInput.value;
@@ -159,8 +81,7 @@ export function handleLikeCard(evt, cardId, elementLikeNumber) {
   if (!evt.target.classList.contains('element__like-button_active')) {
     likeCard(cardId)
       .then((data) => {
-        const numberLike = data.likes.length
-        toggleLike(evt, numberLike, elementLikeNumber);
+        toggleLike(evt, data.likes.length, elementLikeNumber);
       })
       .catch((err) => {
         console.log(err)
@@ -168,14 +89,14 @@ export function handleLikeCard(evt, cardId, elementLikeNumber) {
   } else {
     dislikeCard(cardId)
       .then((data) => {
-        const numberLike = data.likes.length
-        toggleLike(evt, numberLike, elementLikeNumber);
+        toggleLike(evt, data.likes.length, elementLikeNumber);
       })
       .catch((err) => {
         console.log(err)
       });
   }
 };
+
 export function handleDeleteCard(evt, cardId) {
   deleteCard(cardId)
     .then(() => {
@@ -185,3 +106,67 @@ export function handleDeleteCard(evt, cardId) {
       console.log(err)
     })
 }
+
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains('popup__close-button')) {
+      closePopup(popup);
+    }
+  })
+});
+
+avatarEditButton.addEventListener('click', function () {
+  resetForm(avatarPopup);
+  openPopup(avatarPopup)
+})
+
+profileEditButton.addEventListener('click', function () {
+  resetForm(profilePopup);
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileSubtitle.textContent;
+  openPopup(profilePopup)
+});
+
+profileAddButton.addEventListener('click', function () {
+  resetForm(cardPopup)
+  openPopup(cardPopup)
+});
+
+formEditProfile.addEventListener('submit', modifyProfileData);
+
+formAddCard.addEventListener('submit', addCardFromForm);
+
+formAvatarEdit.addEventListener('submit', patchAvatarFromForm);
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+});
+
+getUserInfo()
+  .then((result) => {
+    profileTitle.textContent = result.name;
+    profileSubtitle.textContent = result.about;
+    avatarImage.src = result.avatar;
+    profileId = result._id;
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
+getInitialCard()
+  .then((result) => {
+    result.reverse().forEach((item) => {
+      const newCard = createCard(profileId, item);
+      addCard(newCard);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
