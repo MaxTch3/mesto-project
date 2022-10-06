@@ -2,7 +2,7 @@ import './pages/index.css';
 import { createCard, removeCard, toggleLike } from './components/card.js'
 import { avatarEditButton, avatarImage, avatarPopup, avatarUrlInput, cardPopup, cardsContainer, formAddCard, formAvatarEdit, formEditProfile, imageNameInput, imageUrlInput, jobInput, nameInput, popups, profileAddButton, profileEditButton, profilePopup, profileSubtitle, profileTitle, renderLoading } from "./components/utils.js";
 import { openPopup, closePopup } from "./components/modal.js";
-import enableValidation from "./components/validate.js";
+import { enableValidation, resetForm } from "./components/validate.js";
 import { deleteCard, dislikeCard, getInitialCard, getUserInfo, likeCard, patchAvatar, postNewCard, setUserInfo } from './components/api.js';
 
 let profileId = "";
@@ -28,20 +28,6 @@ export function addCardFromForm(evt) {
       renderLoading(false, cardPopup)
     })
 };
-
-export function resetForm(popup) {
-  popup.querySelector('.popup__form').reset();
-  const inputElements = popup.querySelectorAll('.popup__input');
-  const errorElements = popup.querySelectorAll('.popup__input-error');
-  inputElements.forEach((inputElement) => {
-    inputElement.classList.remove('popup__input_type_error');
-  });
-  errorElements.forEach((errorElement) => {
-    errorElement.classList.remove('popup__input-error_active');
-    errorElement.textContent = '';
-  });
-  popup.querySelector('.popup__submit').disabled = true;
-}
 
 export function modifyProfileData(evt) {
   evt.preventDefault();
@@ -119,19 +105,40 @@ popups.forEach((popup) => {
 });
 
 avatarEditButton.addEventListener('click', function () {
-  resetForm(avatarPopup);
+  resetForm(avatarPopup, {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active',
+    inputErrorSelector: '.popup__input-error',
+  });
   openPopup(avatarPopup)
 })
 
 profileEditButton.addEventListener('click', function () {
-  resetForm(profilePopup);
+  resetForm(profilePopup, {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active',
+    inputErrorSelector: '.popup__input-error',
+  });
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   openPopup(profilePopup)
 });
 
 profileAddButton.addEventListener('click', function () {
-  resetForm(cardPopup)
+  resetForm(cardPopup, {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__submit',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active',
+    inputErrorSelector: '.popup__input-error',
+  });
   openPopup(cardPopup)
 });
 
@@ -146,23 +153,18 @@ enableValidation({
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__submit',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
+  errorClass: 'popup__input-error_active',
+  inputErrorSelector: '.popup__input-error',
 });
 
-getUserInfo()
-  .then((result) => {
-    profileTitle.textContent = result.name;
-    profileSubtitle.textContent = result.about;
-    avatarImage.src = result.avatar;
-    profileId = result._id;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+Promise.all([getUserInfo(), getInitialCard()])
+  .then(([userInfo, initialCard]) => {
+    profileTitle.textContent = userInfo.name;
+    profileSubtitle.textContent = userInfo.about;
+    avatarImage.src = userInfo.avatar;
+    profileId = userInfo._id;
 
-getInitialCard()
-  .then((result) => {
-    result.reverse().forEach((item) => {
+    initialCard.reverse().forEach((item) => {
       const newCard = createCard(profileId, item);
       addCard(newCard);
     });

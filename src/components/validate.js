@@ -52,7 +52,7 @@ function setEventListeners(formElement, settings) {
   });
 }
 
-export default function enableValidation(settings) {
+export function enableValidation(settings) {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', (evt) => {
@@ -61,3 +61,17 @@ export default function enableValidation(settings) {
     setEventListeners(formElement, settings);
   });
 };
+
+export function resetForm(popup, settings) {
+  popup.querySelector(settings.formSelector).reset();
+  const inputElements = popup.querySelectorAll(settings.inputSelector);
+  const errorElements = popup.querySelectorAll(settings.inputErrorSelector);
+  inputElements.forEach((inputElement) => {
+    inputElement.classList.remove(settings.inputErrorClass);
+  });
+  errorElements.forEach((errorElement) => {
+    errorElement.classList.remove(settings.errorClass);
+    errorElement.textContent = '';
+  });
+  popup.querySelector(settings.submitButtonSelector).disabled = true;
+}
