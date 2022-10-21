@@ -1,6 +1,6 @@
-import { handleLikeCard, handleDeleteCard } from "../index.js";
+import { handleLikeCard, handleDeleteCard } from "../pages/index.js";
 import { openPopup } from "./modal.js";
-import { cardElement, viewerImage, imagePopup, captionImage } from "./utils.js";
+import { cardElement, viewerImage, imagePopup, captionImage } from "../utils/constants.js";
 
 export function createCard(profileId, item) {
   const element = cardElement.cloneNode(true)

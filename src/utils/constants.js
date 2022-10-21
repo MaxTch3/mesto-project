@@ -21,12 +21,3 @@ export const avatarPopup = document.querySelector('.popup_type_avatar');
 export const formAvatarEdit = avatarPopup.querySelector('.popup__form');
 export const avatarUrlInput = formAvatarEdit.querySelector('.popup__input_name_avatar-url');
 export const popups = document.querySelectorAll('.popup');
-
-export function renderLoading(isLoading, form) {
-  const submitButton = form.querySelector('.popup__submit');
-  if (isLoading) {
-    submitButton.classList.add('popup__submit_loading')
-  } else {
-    submitButton.classList.remove('popup__submit_loading')
-  };
-}

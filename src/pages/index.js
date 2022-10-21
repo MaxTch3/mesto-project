@@ -1,9 +1,10 @@
-import './pages/index.css';
-import { createCard, removeCard, toggleLike } from './components/card.js'
-import { avatarEditButton, avatarImage, avatarPopup, avatarUrlInput, cardPopup, cardsContainer, formAddCard, formAvatarEdit, formEditProfile, imageNameInput, imageUrlInput, jobInput, nameInput, popups, profileAddButton, profileEditButton, profilePopup, profileSubtitle, profileTitle, renderLoading } from "./components/utils.js";
-import { openPopup, closePopup } from "./components/modal.js";
-import { enableValidation, resetForm } from "./components/validate.js";
-import { deleteCard, dislikeCard, getInitialCard, getUserInfo, likeCard, patchAvatar, postNewCard, setUserInfo } from './components/api.js';
+import './index.css';
+import { createCard, removeCard, toggleLike } from '../components/card.js'
+import { avatarEditButton, avatarImage, avatarPopup, avatarUrlInput, cardPopup, cardsContainer, formAddCard, formAvatarEdit, formEditProfile, imageNameInput, imageUrlInput, jobInput, nameInput, popups, profileAddButton, profileEditButton, profilePopup, profileSubtitle, profileTitle } from '../utils/constants.js';
+import { renderLoading } from '../utils/utils.js'
+import { openPopup, closePopup } from "../components/modal.js";
+import { enableValidation, resetForm } from "../components/validate.js";
+import { deleteCard, dislikeCard, getInitialCard, getUserInfo, likeCard, patchAvatar, postNewCard, setUserInfo } from '../components/api.js';
 
 let profileId = "";
 
