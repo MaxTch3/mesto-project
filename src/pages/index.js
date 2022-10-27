@@ -22,13 +22,14 @@ import {
   profilePopup,
   profileSubtitle,
   profileTitle,
+  settingsValidation,
   viewerImage
 } from '../utils/constants.js';
 import { renderLoading } from '../utils/utils.js'
 import { openPopup, closePopup } from "../components/modal.js";
-import { enableValidation, resetForm } from "../components/validate.js";
-import Api from '../components/api.js';
-import Card from '../components/card.js'
+import Api from '../components/Api.js';
+import Card from '../components/Card.js';
+import FormValidator from "../components/FormValidator.js";
 
 const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
@@ -38,6 +39,10 @@ const api = new Api({
   }
 }
 );
+
+const validationProfilePopup = new FormValidator(settingsValidation, profilePopup);
+const validationCardPopup = new FormValidator(settingsValidation, cardPopup);
+const validationAvatarPopup = new FormValidator(settingsValidation, avatarPopup);
 
 let profileId = "";
 
@@ -60,7 +65,6 @@ export function addCardFromForm(evt) {
         handleDeleteCard,
         handleCardClick)
         .generate();
-
       addCard(newCard);
       closePopup(cardPopup);
     })
@@ -155,57 +159,29 @@ popups.forEach((popup) => {
 });
 
 avatarEditButton.addEventListener('click', function () {
-  resetForm(avatarPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationAvatarPopup.resetForm();
   openPopup(avatarPopup)
 })
 
 profileEditButton.addEventListener('click', function () {
-  resetForm(profilePopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationProfilePopup.resetForm();
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   openPopup(profilePopup)
 });
 
 profileAddButton.addEventListener('click', function () {
-  resetForm(cardPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationCardPopup.resetForm();
   openPopup(cardPopup)
 });
 
 formEditProfile.addEventListener('submit', modifyProfileData);
-
 formAddCard.addEventListener('submit', addCardFromForm);
-
 formAvatarEdit.addEventListener('submit', patchAvatarFromForm);
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active',
-  inputErrorSelector: '.popup__input-error',
-});
+validationProfilePopup.enableValidation();
+validationCardPopup.enableValidation();
+validationAvatarPopup.enableValidation();
 
 Promise.all([api.getUserInfo(), api.getInitialCard()])
   .then(([userInfo, initialCard]) => {
@@ -223,7 +199,6 @@ Promise.all([api.getUserInfo(), api.getInitialCard()])
         handleDeleteCard,
         handleCardClick)
         .generate();
-
       addCard(card);
     });
   })
