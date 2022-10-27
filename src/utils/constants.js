@@ -21,3 +21,4 @@ export const avatarPopup = document.querySelector('.popup_type_avatar');
 export const formAvatarEdit = avatarPopup.querySelector('.popup__form');
 export const avatarUrlInput = formAvatarEdit.querySelector('.popup__input_name_avatar-url');
 export const popups = document.querySelectorAll('.popup');
+export const cardSelector = '#element'
