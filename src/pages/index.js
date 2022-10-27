@@ -1,23 +1,52 @@
 import './index.css';
-import { createCard, removeCard, toggleLike } from '../components/card.js'
-import { avatarEditButton, avatarImage, avatarPopup, avatarUrlInput, cardPopup, cardsContainer, formAddCard, formAvatarEdit, formEditProfile, imageNameInput, imageUrlInput, jobInput, nameInput, popups, profileAddButton, profileEditButton, profilePopup, profileSubtitle, profileTitle } from '../utils/constants.js';
-import { renderLoading } from '../utils/utils.js'
-import { openPopup, closePopup } from "../components/modal.js";
-import { enableValidation, resetForm } from "../components/validate.js";
-import { deleteCard, dislikeCard, getInitialCard, getUserInfo, likeCard, patchAvatar, postNewCard, setUserInfo } from '../components/api.js';
+import {createCard, removeCard, toggleLike} from '../components/card.js'
+import {
+  avatarEditButton,
+  avatarImage,
+  avatarPopup,
+  avatarUrlInput,
+  cardPopup,
+  cardsContainer,
+  formAddCard,
+  formAvatarEdit,
+  formEditProfile,
+  imageNameInput,
+  imageUrlInput,
+  jobInput,
+  nameInput,
+  popups,
+  profileAddButton,
+  profileEditButton,
+  profilePopup,
+  profileSubtitle,
+  profileTitle
+} from '../utils/constants.js';
+import {renderLoading} from '../utils/utils.js'
+import {openPopup, closePopup} from "../components/modal.js";
+import {enableValidation, resetForm} from "../components/validate.js";
+import Api from '../components/api.js';
+
+const api = new Api({
+    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
+    headers: {
+      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
 let profileId = "";
 
 function addCard(card) {
   cardsContainer.prepend(card);
-};
+}
 
 export function addCardFromForm(evt) {
   evt.preventDefault();
   renderLoading(true, cardPopup)
   const name = imageNameInput.value;
   const url = imageUrlInput.value;
-  postNewCard(name, url)
+  api.postNewCard(name, url)
     .then((data) => {
       addCard(createCard(profileId, data));
       closePopup(cardPopup);
@@ -28,12 +57,12 @@ export function addCardFromForm(evt) {
     .finally(() => {
       renderLoading(false, cardPopup)
     })
-};
+}
 
 export function modifyProfileData(evt) {
   evt.preventDefault();
   renderLoading(true, profilePopup);
-  setUserInfo(nameInput.value, jobInput.value)
+  api.setUserInfo(nameInput.value, jobInput.value)
     .then(() => {
       profileTitle.textContent = nameInput.value;
       profileSubtitle.textContent = jobInput.value;
@@ -45,13 +74,13 @@ export function modifyProfileData(evt) {
     .finally(() => {
       renderLoading(false, profilePopup)
     })
-};
+}
 
 export function patchAvatarFromForm(evt) {
   evt.preventDefault();
   renderLoading(true, avatarPopup)
   const avatarUrl = avatarUrlInput.value;
-  patchAvatar(avatarUrl)
+  api.patchAvatar(avatarUrl)
     .then(() => {
       avatarImage.src = avatarUrl;
       closePopup(avatarPopup);
@@ -66,7 +95,7 @@ export function patchAvatarFromForm(evt) {
 
 export function handleLikeCard(evt, cardId, elementLikeNumber) {
   if (!evt.target.classList.contains('element__like-button_active')) {
-    likeCard(cardId)
+    api.likeCard(cardId)
       .then((data) => {
         toggleLike(evt, data.likes.length, elementLikeNumber);
       })
@@ -74,7 +103,7 @@ export function handleLikeCard(evt, cardId, elementLikeNumber) {
         console.log(err)
       });
   } else {
-    dislikeCard(cardId)
+    api.dislikeCard(cardId)
       .then((data) => {
         toggleLike(evt, data.likes.length, elementLikeNumber);
       })
@@ -82,10 +111,10 @@ export function handleLikeCard(evt, cardId, elementLikeNumber) {
         console.log(err)
       });
   }
-};
+}
 
 export function handleDeleteCard(evt, cardId) {
-  deleteCard(cardId)
+  api.deleteCard(cardId)
     .then(() => {
       removeCard(evt)
     })
@@ -158,7 +187,7 @@ enableValidation({
   inputErrorSelector: '.popup__input-error',
 });
 
-Promise.all([getUserInfo(), getInitialCard()])
+Promise.all([api.getUserInfo(), api.getInitialCard()])
   .then(([userInfo, initialCard]) => {
     profileTitle.textContent = userInfo.name;
     profileSubtitle.textContent = userInfo.about;
