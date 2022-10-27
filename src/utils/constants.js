@@ -21,3 +21,13 @@ export const avatarPopup = document.querySelector('.popup_type_avatar');
 export const formAvatarEdit = avatarPopup.querySelector('.popup__form');
 export const avatarUrlInput = formAvatarEdit.querySelector('.popup__input_name_avatar-url');
 export const popups = document.querySelectorAll('.popup');
+export const cardSelector = '#element'
+
+export const settingsValidation = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+  inputErrorSelector: '.popup__input-error',
+};

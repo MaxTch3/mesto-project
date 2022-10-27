@@ -1,17 +1,19 @@
 import './index.css';
-import {createCard, removeCard, toggleLike} from '../components/card.js'
 import {
   avatarEditButton,
   avatarImage,
   avatarPopup,
   avatarUrlInput,
+  captionImage,
   cardPopup,
   cardsContainer,
+  cardSelector,
   formAddCard,
   formAvatarEdit,
   formEditProfile,
   imageNameInput,
   imageUrlInput,
+  imagePopup,
   jobInput,
   nameInput,
   popups,
@@ -19,21 +21,28 @@ import {
   profileEditButton,
   profilePopup,
   profileSubtitle,
-  profileTitle
+  profileTitle,
+  settingsValidation,
+  viewerImage
 } from '../utils/constants.js';
-import {renderLoading} from '../utils/utils.js'
-import {openPopup, closePopup} from "../components/modal.js";
-import {enableValidation, resetForm} from "../components/validate.js";
-import Api from '../components/api.js';
+import { renderLoading } from '../utils/utils.js'
+import { openPopup, closePopup } from "../components/modal.js";
+import Api from '../components/Api.js';
+import Card from '../components/Card.js';
+import FormValidator from "../components/FormValidator.js";
 
 const api = new Api({
-    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
-    headers: {
-      authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
-      'Content-Type': 'application/json'
-    }
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
+  headers: {
+    authorization: 'df96d3b0-3822-438d-a20e-f1a1a788e6cc',
+    'Content-Type': 'application/json'
   }
+}
 );
+
+const validationProfilePopup = new FormValidator(settingsValidation, profilePopup);
+const validationCardPopup = new FormValidator(settingsValidation, cardPopup);
+const validationAvatarPopup = new FormValidator(settingsValidation, avatarPopup);
 
 let profileId = "";
 
@@ -48,7 +57,15 @@ export function addCardFromForm(evt) {
   const url = imageUrlInput.value;
   api.postNewCard(name, url)
     .then((data) => {
-      addCard(createCard(profileId, data));
+      const newCard = new Card(
+        data,
+        cardSelector,
+        profileId,
+        handleLikeCard,
+        handleDeleteCard,
+        handleCardClick)
+        .generate();
+      addCard(newCard);
       closePopup(cardPopup);
     })
     .catch((err) => {
@@ -93,19 +110,19 @@ export function patchAvatarFromForm(evt) {
     });
 }
 
-export function handleLikeCard(evt, cardId, elementLikeNumber) {
+export function handleLikeCard(evt) {
   if (!evt.target.classList.contains('element__like-button_active')) {
-    api.likeCard(cardId)
+    api.likeCard(this._cardId)
       .then((data) => {
-        toggleLike(evt, data.likes.length, elementLikeNumber);
+        this.toggleLike(evt, data.likes.length);
       })
       .catch((err) => {
         console.log(err)
       });
   } else {
-    api.dislikeCard(cardId)
+    api.dislikeCard(this._cardId)
       .then((data) => {
-        toggleLike(evt, data.likes.length, elementLikeNumber);
+        this.toggleLike(evt, data.likes.length);
       })
       .catch((err) => {
         console.log(err)
@@ -113,14 +130,21 @@ export function handleLikeCard(evt, cardId, elementLikeNumber) {
   }
 }
 
-export function handleDeleteCard(evt, cardId) {
-  api.deleteCard(cardId)
+export function handleDeleteCard(evt) {
+  api.deleteCard(this._cardId)
     .then(() => {
-      removeCard(evt)
+      this.removeCard(evt)
     })
     .catch((err) => {
       console.log(err)
     })
+}
+
+export function handleCardClick() {
+  viewerImage.src = this._link;
+  viewerImage.alt = this._name;
+  captionImage.textContent = this._name;
+  openPopup(imagePopup);
 }
 
 popups.forEach((popup) => {
@@ -135,57 +159,29 @@ popups.forEach((popup) => {
 });
 
 avatarEditButton.addEventListener('click', function () {
-  resetForm(avatarPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationAvatarPopup.resetForm();
   openPopup(avatarPopup)
 })
 
 profileEditButton.addEventListener('click', function () {
-  resetForm(profilePopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationProfilePopup.resetForm();
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   openPopup(profilePopup)
 });
 
 profileAddButton.addEventListener('click', function () {
-  resetForm(cardPopup, {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__submit',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active',
-    inputErrorSelector: '.popup__input-error',
-  });
+  validationCardPopup.resetForm();
   openPopup(cardPopup)
 });
 
 formEditProfile.addEventListener('submit', modifyProfileData);
-
 formAddCard.addEventListener('submit', addCardFromForm);
-
 formAvatarEdit.addEventListener('submit', patchAvatarFromForm);
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active',
-  inputErrorSelector: '.popup__input-error',
-});
+validationProfilePopup.enableValidation();
+validationCardPopup.enableValidation();
+validationAvatarPopup.enableValidation();
 
 Promise.all([api.getUserInfo(), api.getInitialCard()])
   .then(([userInfo, initialCard]) => {
@@ -195,8 +191,15 @@ Promise.all([api.getUserInfo(), api.getInitialCard()])
     profileId = userInfo._id;
 
     initialCard.reverse().forEach((item) => {
-      const newCard = createCard(profileId, item);
-      addCard(newCard);
+      const card = new Card(
+        item,
+        cardSelector,
+        profileId,
+        handleLikeCard,
+        handleDeleteCard,
+        handleCardClick)
+        .generate();
+      addCard(card);
     });
   })
   .catch((err) => {
