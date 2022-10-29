@@ -4,7 +4,6 @@ import {
   avatarImage,
   avatarPopup,
   avatarUrlInput,
-  captionImage,
   cardPopup,
   cardsContainer,
   cardSelector,
@@ -13,7 +12,6 @@ import {
   formEditProfile,
   imageNameInput,
   imageUrlInput,
-  imagePopup,
   jobInput,
   nameInput,
   popups,
@@ -23,13 +21,14 @@ import {
   profileSubtitle,
   profileTitle,
   settingsValidation,
-  viewerImage
+  popupImageSelector
 } from '../utils/constants.js';
 import { renderLoading } from '../utils/utils.js'
 import { openPopup, closePopup } from "../components/modal.js";
 import Api from '../components/Api.js';
 import Card from '../components/Card.js';
 import FormValidator from "../components/FormValidator.js";
+import PopupWithImage from '../components/PopupWithImage.js';
 
 const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
@@ -139,13 +138,8 @@ export function handleDeleteCard(evt) {
       console.log(err)
     })
 }
-
-export function handleCardClick() {
-  viewerImage.src = this._link;
-  viewerImage.alt = this._name;
-  captionImage.textContent = this._name;
-  openPopup(imagePopup);
-}
+const popupImage = new PopupWithImage(popupImageSelector)
+popupImage.setEventListeners();
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
@@ -197,7 +191,7 @@ Promise.all([api.getUserInfo(), api.getInitialCard()])
         profileId,
         handleLikeCard,
         handleDeleteCard,
-        handleCardClick)
+        () =>  popupImage.open(item.link, item.name))
         .generate();
       addCard(card);
     });
