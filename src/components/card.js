@@ -13,7 +13,7 @@ export default class Card {
   }
 
   _getElement() {
-    this._element = document.querySelector('#element').content.cloneNode(true);
+    return document.querySelector(this._selector).content.cloneNode(true);
   }
 
   _setEventListeners() {
@@ -36,7 +36,7 @@ export default class Card {
   }
 
   generate() {
-    this._getElement();
+    this._element = this._getElement();
     this._elementImage = this._element.querySelector('.element__image');
     this._elementName = this._element.querySelector('.element__title');
     this._buttonLike = this._element.querySelector('.element__like-button');

@@ -56,15 +56,7 @@ export function addCardFromForm(evt) {
   const url = imageUrlInput.value;
   api.postNewCard(name, url)
     .then((data) => {
-      const newCard = new Card(
-        data,
-        cardSelector,
-        profileId,
-        handleLikeCard,
-        handleDeleteCard,
-        handleCardClick)
-        .generate();
-      addCard(newCard);
+      addCard(newCardElement(data));
       closePopup(cardPopup);
     })
     .catch((err) => {
@@ -109,35 +101,6 @@ export function patchAvatarFromForm(evt) {
     });
 }
 
-export function handleLikeCard(evt) {
-  if (!evt.target.classList.contains('element__like-button_active')) {
-    api.likeCard(this._cardId)
-      .then((data) => {
-        this.toggleLike(evt, data.likes.length);
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  } else {
-    api.dislikeCard(this._cardId)
-      .then((data) => {
-        this.toggleLike(evt, data.likes.length);
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  }
-}
-
-export function handleDeleteCard(evt) {
-  api.deleteCard(this._cardId)
-    .then(() => {
-      this.removeCard(evt)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
 const popupImage = new PopupWithImage(popupImageSelector)
 popupImage.setEventListeners();
 
@@ -185,17 +148,49 @@ Promise.all([api.getUserInfo(), api.getInitialCard()])
     profileId = userInfo._id;
 
     initialCard.reverse().forEach((item) => {
-      const card = new Card(
-        item,
-        cardSelector,
-        profileId,
-        handleLikeCard,
-        handleDeleteCard,
-        () =>  popupImage.open(item.link, item.name))
-        .generate();
-      addCard(card);
+      addCard(newCardElement(item));
     });
   })
   .catch((err) => {
     console.log(err);
-  })
+  });
+
+const newCardElement = (item) => {
+  const card = new Card(
+    item,
+    cardSelector,
+    profileId,
+    (evt) => {
+      if (!evt.target.classList.contains('element__like-button_active')) {
+        api.likeCard(item._id)
+          .then((data) => {
+            card.toggleLike(evt, data.likes.length);
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      } else {
+        api.dislikeCard(item._id)
+          .then((data) => {
+            card.toggleLike(evt, data.likes.length);
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      }
+    },
+    //handleDeleteCard
+    (evt) => {
+      api.deleteCard(item._id)
+        .then(() => {
+          card.removeCard(evt)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // handleCardClick
+    () => popupImage.open(item.link, item.name)
+  );
+  return card.generate()
+}
