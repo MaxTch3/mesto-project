@@ -54,12 +54,10 @@ imagePopup.setEventListeners();
 let profileId = "";
 let cardsSection = null;
 
-function addCardFromForm(evt) {
+function addCardFromForm(evt, inputValues) {
   evt.preventDefault();
   renderLoading(true, cardPopupSelector)
-  const name = imageNameInput.value;
-  const url = imageUrlInput.value;
-  api.postNewCard(name, url)
+  api.postNewCard(inputValues['image-title'], inputValues['image-url'])
     .then((data) => {
       cardsSection.addItem(createCardElement(data));
       cardPopup.close();
@@ -72,10 +70,10 @@ function addCardFromForm(evt) {
     })
 }
 
-function modifyProfileData(evt) {
+function modifyProfileData(evt, inputValues) {
   evt.preventDefault();
   renderLoading(true, profilePopupSelector);
-  api.setUserInfo(nameInput.value, jobInput.value)
+  api.setUserInfo(inputValues['name-and-surname'], inputValues.work)
     .then((data) => {
       userInfo.setUserInfo(data);
       profilePopup.close();
@@ -88,13 +86,12 @@ function modifyProfileData(evt) {
     })
 }
 
-function patchAvatarFromForm(evt) {
+function patchAvatarFromForm(evt, inputValues) {
   evt.preventDefault();
   renderLoading(true, avatarPopupSelector)
-  const avatarUrl = avatarUrlInput.value;
-  api.patchAvatar(avatarUrl)
+  api.patchAvatar(inputValues['avatar-url'])
     .then(() => {
-      avatarImage.src = avatarUrl;
+      avatarImage.src = inputValues['avatar-url'];
       avatarPopup.close();
     })
     .catch((err) => {
