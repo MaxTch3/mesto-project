@@ -15,17 +15,18 @@ import {
   profileAddButton,
   profileEditButton,
   profilePopupSelector,
-  profileSubtitle,
-  profileTitle,
+  profileSubtitleSelector,
+  profileTitleSelector,
   settingsValidation,
-} from '../utils/constants.js';
-import { renderLoading } from '../utils/utils.js';
-import Api from '../components/Api.js';
-import Card from '../components/Card.js';
-import FormValidator from "../components/FormValidator.js";
+} from '../utils/constants';
+import { renderLoading } from '../utils/utils';
+import Api from '../components/Api';
+import Card from '../components/Card';
+import FormValidator from "../components/FormValidator";
 import Section from "../components/Section";
 import PopupWithForm from "../components/PopupWithForm";
 import PopupWithImage from "../components/PopupWithImage";
+import UserInfo from '../components/UserInfo';
 
 const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-15',
@@ -75,9 +76,8 @@ function modifyProfileData(evt) {
   evt.preventDefault();
   renderLoading(true, profilePopupSelector);
   api.setUserInfo(nameInput.value, jobInput.value)
-    .then(() => {
-      profileTitle.textContent = nameInput.value;
-      profileSubtitle.textContent = jobInput.value;
+    .then((data) => {
+      userInfo.setUserInfo(data);
       profilePopup.close();
     })
     .catch((err) => {
@@ -153,8 +153,11 @@ avatarEditButton.addEventListener('click', function () {
 
 profileEditButton.addEventListener('click', function () {
   validationProfilePopup.resetForm();
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileSubtitle.textContent;
+  const data = userInfo.getUserInfo();
+  nameInput.value = data.name;
+  jobInput.value = data.about;
+
+
   profilePopup.open();
 });
 
@@ -167,12 +170,14 @@ validationProfilePopup.enableValidation();
 validationCardPopup.enableValidation();
 validationAvatarPopup.enableValidation();
 
+const userInfo = new UserInfo(profileTitleSelector, profileSubtitleSelector);
+
 Promise.all([api.getUserInfo(), api.getInitialCard()])
-  .then(([userInfo, initialCard]) => {
-    profileTitle.textContent = userInfo.name;
-    profileSubtitle.textContent = userInfo.about;
-    avatarImage.src = userInfo.avatar;
-    profileId = userInfo._id;
+  .then(([userData, initialCard]) => {
+
+    userInfo.setUserInfo(userData);
+    avatarImage.src = userData.avatar;
+    profileId = userData._id;
     cardsSection = new Section({
       items: initialCard.reverse(),
       renderer: function (item) {
