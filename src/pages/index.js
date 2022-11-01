@@ -3,12 +3,9 @@ import {
   avatarEditButton,
   avatarImage,
   avatarPopupSelector,
-  avatarUrlInput,
   cardPopupSelector,
   cardsContainer,
   cardSelector,
-  imageNameInput,
-  imageUrlInput,
   imagePopupSelector,
   jobInput,
   nameInput,
@@ -131,7 +128,7 @@ function createCardElement(item) {
     (evt) => {
       api.deleteCard(item._id)
         .then(() => {
-          card.removeCard(evt)
+          card.removeCard()
         })
         .catch((err) => {
           console.log(err)

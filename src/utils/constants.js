@@ -9,11 +9,8 @@ export const nameInput = document.querySelector('.popup__input_name_name-and-sur
 export const jobInput = document.querySelector('.popup__input_name_work');
 export const cardsContainer = document.querySelector('.elements');
 export const cardPopupSelector = document.querySelector('.popup_type_card');
-export const imageNameInput = document.querySelector('.popup__input_name_image-title');
-export const imageUrlInput = document.querySelector('.popup__input_name_image-url');
 export const imagePopupSelector = document.querySelector('.popup_type_image');
 export const avatarPopupSelector = document.querySelector('.popup_type_avatar');
-export const avatarUrlInput = document.querySelector('.popup__input_name_avatar-url');
 export const cardSelector = '#element'
 
 export const settingsValidation = {
