@@ -13,7 +13,7 @@ export default class Card {
   }
 
   _getElement() {
-    return document.querySelector('#element').content.cloneNode(true);
+    return document.querySelector('#element').content.firstElementChild.cloneNode(true);
   }
 
   _setEventListeners() {
@@ -22,8 +22,9 @@ export default class Card {
     this._elementImage.addEventListener('click', () => this._handleCardClick());
   }
 
-  removeCard(evt) {
-    evt.target.parentElement.remove();
+  removeCard() {
+    this._element.remove();
+    this._element = null;
   }
 
   toggleLike(evt, numberLike) {
