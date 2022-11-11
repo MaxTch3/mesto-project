@@ -1,59 +1,63 @@
-import { handleLikeCard, handleDeleteCard } from "../index.js";
-import { openPopup } from "./modal.js";
-import { cardElement, viewerImage, imagePopup, captionImage } from "./utils.js";
-
-export function createCard(profileId, item) {
-  const element = cardElement.cloneNode(true)
-  const elementImage = element.querySelector('.element__image');
-  const elementName = element.querySelector('.element__title');
-  const buttonLike = element.querySelector('.element__like-button');
-  const elementLikeNumber = element.querySelector('.element__like-number');
-  const buttonDelete = element.querySelector('.element__delete-button');
-  const like = item.likes.some(el => el._id == profileId);
-  const cardId = item._id;
-  const idMatch = item.owner._id === profileId;
-
-  elementName.textContent = item.name;
-  elementImage.src = item.link;
-  elementImage.alt = item.name;
-  elementLikeNumber.textContent = item.likes.length;
-
-  if (like === true) {
-    buttonLike.classList.add('element__like-button_active');
-  };
-
-  buttonLike.addEventListener('click', function (evt) {
-    handleLikeCard(evt, cardId, elementLikeNumber)
-  });
-
-  if (!idMatch) {
-    buttonDelete.disabled = true
-  } else {
-    buttonDelete.addEventListener('click', function (evt) {
-      handleDeleteCard(evt, cardId);
-    });
+export default class Card {
+  constructor(data, selector, profileId, handleLikeCard, handleDeleteCard, handleCardClick) {
+    this._name = data.name;
+    this._link = data.link;
+    this._likes = data.likes;
+    this._cardId = data._id;
+    this._ownerId = data.owner._id;
+    this._profileId = profileId;
+    this._selector = selector;
+    this._handleLikeCard = handleLikeCard;
+    this._handleDeleteCard = handleDeleteCard;
+    this._handleCardClick = handleCardClick;
   }
 
-  elementImage.addEventListener('click', function () {
-    viewerImage.src = elementImage.src;
-    viewerImage.alt = elementName.textContent;
-    captionImage.textContent = elementName.textContent;
-    openPopup(imagePopup);
-  });
-  return element
-};
-
-export function toggleLike(evt, numberLike, elementLikeNumber) {
-  if (!evt.target.classList.contains('element__like-button_active')) {
-    evt.target.classList.add('element__like-button_active');
-  } else {
-    evt.target.classList.remove('element__like-button_active');
+  _getElement() {
+    return document.querySelector('#element').content.firstElementChild.cloneNode(true);
   }
-  elementLikeNumber.textContent = numberLike;
-}
 
-export function removeCard(evt) {
-  const cardToDelete = evt.target.parentElement;
-  cardToDelete.remove();
-}
+  _setEventListeners() {
+    this._buttonLike.addEventListener('click', (evt) => this._handleLikeCard(evt));
+    this._buttonDelete.addEventListener('click', (evt) => this._handleDeleteCard(evt));
+    this._elementImage.addEventListener('click', () => this._handleCardClick());
+  }
 
+  removeCard() {
+    this._element.remove();
+    this._element = null;
+  }
+
+  toggleLike(evt, numberLike) {
+    if (!evt.target.classList.contains('element__like-button_active')) {
+      evt.target.classList.add('element__like-button_active');
+    } else {
+      evt.target.classList.remove('element__like-button_active');
+    }
+    this._elementLikeNumber.textContent = numberLike;
+  }
+
+  generate() {
+    this._element = this._getElement();
+    this._elementImage = this._element.querySelector('.element__image');
+    this._elementName = this._element.querySelector('.element__title');
+    this._buttonLike = this._element.querySelector('.element__like-button');
+    this._elementLikeNumber = this._element.querySelector('.element__like-number');
+    this._buttonDelete = this._element.querySelector('.element__delete-button');
+    this._like = this._likes.some(el => el._id == this._profileId);
+    this._idMatch = this._ownerId === this._profileId;
+    this._elementName.textContent = this._name;
+    this._elementImage.src = this._link;
+    this._elementImage.alt = this._name;
+    this._elementLikeNumber.textContent = this._likes.length;
+
+    if (this._like === true) {
+      this._buttonLike.classList.add('element__like-button_active');
+    };
+    if (!this._idMatch) {
+      this._buttonDelete.disabled = true
+    };
+    this._setEventListeners();
+
+    return this._element
+  }
+}
